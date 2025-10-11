@@ -5,15 +5,15 @@
   "module": "src/main.ts",
   "type": "module",
   "bin": {
-    "full-self-coding": "./dist/index.js"
+    "full-self-coding": "./dist/main.js"
   },
   "files": [
     "dist"
   ],
   "scripts": {
-    "build": "bun build ./src/index.ts --target node --outdir dist",
+    "build": "bun build ./src/main.ts --target node --outdir dist",
     "prepare": "bun run build",
-    "start": "bun src/index.ts"
+    "start": "bun src/main.ts"
   },
   "devDependencies": {
     "@types/bun": "latest",
@@ -21,7 +21,8 @@
     "typescript": "^5.0.0"
   },
   "dependencies": {
-    "commander": "^11.0.0"
+    "commander": "^11.0.0",
+    "toml": "^3.0.0"
   },
   "engines": {
     "node": ">=18"
