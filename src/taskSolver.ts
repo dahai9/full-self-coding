@@ -84,6 +84,7 @@ export class TaskSolver {
 
       // run the last command asynchronously
       if (lastCommand) {
+        console.log(`Starting solving the task ${this.task.ID} with last command: ${lastCommand} at ${this.dockerContainerName}`);
         finalOutputOfTaskSolverCommand = await this.dockerInstance.runCommandAsync(lastCommand, this.config.dockerTimeoutSeconds? this.config.dockerTimeoutSeconds : 0);
       }
       else {

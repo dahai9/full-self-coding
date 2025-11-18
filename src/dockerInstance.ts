@@ -150,7 +150,7 @@ export class DockerInstance {
         let status = DockerRunStatus.SUCCESS;
 
         try {
-            console.log(`*****Async Running command: ${command} at docker: ${this.containerName}`);
+            //console.log(`*****Async Running command: ${command} at docker: ${this.containerName}`);
 
             const proc = spawn( {
                 cmd:[
