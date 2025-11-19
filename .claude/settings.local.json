@@ -21,7 +21,9 @@
       "Bash(./dist/main.js:*)",
       "Bash(bash:*)",
       "Bash(powershell:*)",
-      "Bash(./script/verify-install.sh:*)"
+      "Bash(./script/verify-install.sh:*)",
+      "Bash(echo:*)",
+      "Bash(test:*)"
     ],
     "deny": [],
     "ask": []

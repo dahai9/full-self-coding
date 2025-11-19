@@ -41,16 +41,33 @@ export class TaskSolver {
       this.dockerContainerName = await this.dockerInstance.startContainer(imageRef, this.task.ID);
 
 
-      // // copy all files related to git to the container
-      // // create ~/.ssh folder in the container
-      // await this.dockerInstance.runCommands(['mkdir', '-p', '/root/.ssh']);
-      // // copy all files in ~/.ssh to ~/.ssh (/root/.ssh) in the container
-      // await this.dockerInstance.copyFilesToContainer('~/.ssh', '/root/.ssh');
-      // // read ~/.gitconfig on local machine using fs  
-      // const fs = await import('fs');
-      // const dotGitConfigFileText = await fs.promises.readFile('~/.gitconfig', 'utf8');
-      // // copy ~/.gitconfig to ~/.gitconfig (/root/.gitconfig) in the container
-      // await this.dockerInstance.copyFileToContainer(dotGitConfigFileText, '/root/.gitconfig');
+      // 0.4 copy all files related to git to the container
+      const os = await import('os');
+      const fs = await import('fs');
+      const path = await import('path');
+
+      // 0.4.1 create ~/.ssh folder in the container
+      await this.dockerInstance.runCommands(['mkdir', '-p', '/root/.ssh']);
+
+      // 0.4.2 copy all files in ~/.ssh to ~/.ssh (/root/.ssh) in the container
+      const sshPath = path.join(os.homedir(), '.ssh');
+      if (fs.existsSync(sshPath)) {
+          console.log(`Copying SSH files from ${sshPath} to container...`);
+          await this.dockerInstance.copyFilesToContainer(sshPath, '/root/.ssh');
+      } else {
+          console.warn(`SSH directory not found at ${sshPath}, skipping SSH file copy`);
+      }
+
+      // 0.4.3 read ~/.gitconfig on local machine using fs
+      const gitConfigPath = path.join(os.homedir(), '.gitconfig');
+      if (fs.existsSync(gitConfigPath)) {
+          console.log(`Reading git config from ${gitConfigPath}...`);
+          const dotGitConfigFileText = await fs.promises.readFile(gitConfigPath, 'utf8');
+          // 0.4.4 copy ~/.gitconfig to ~/.gitconfig (/root/.gitconfig) in the container
+          await this.dockerInstance.copyFileToContainer(dotGitConfigFileText, '/root/.gitconfig');
+      } else {
+          console.warn(`Git config file not found at ${gitConfigPath}, skipping git config copy`);
+      }
 
 
       // first get the task prompt and save/copy to the docker container

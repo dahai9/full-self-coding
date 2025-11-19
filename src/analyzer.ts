@@ -44,16 +44,33 @@ export async function analyzeCodebase(
         await docker.copyFileToContainer(prompt, '/app/codeAnalyzerPrompt.txt');
         // step 0 done
 
-        // // 0.4 copy all files related to git to the container
-        // // 0.4.1 create ~/.ssh folder in the container
-        // await docker.runCommands(['mkdir', '-p', '/root/.ssh']);
-        // // 0.4.2 copy all files in ~/.ssh to ~/.ssh (/root/.ssh) in the container
-        // await docker.copyFilesToContainer('~/.ssh', '/root/.ssh');
-        // // 0.4.3 read ~/.gitconfig on local machine using fs
-        // const fs = await import('fs');
-        // const dotGitConfigFileText = await fs.promises.readFile('~/.gitconfig', 'utf8');
-        // // 0.4.4 copy ~/.gitconfig to ~/.gitconfig (/root/.gitconfig) in the container
-        // await docker.copyFileToContainer(dotGitConfigFileText, '/root/.gitconfig');
+        // 0.4 copy all files related to git to the container
+        const os = await import('os');
+        const fs = await import('fs');
+        const path = await import('path');
+
+        // 0.4.1 create ~/.ssh folder in the container
+        await docker.runCommands(['mkdir', '-p', '/root/.ssh']);
+
+        // 0.4.2 copy all files in ~/.ssh to ~/.ssh (/root/.ssh) in the container
+        const sshPath = path.join(os.homedir(), '.ssh');
+        if (fs.existsSync(sshPath)) {
+            console.log(`Copying SSH files from ${sshPath} to container...`);
+            await docker.copyFilesToContainer(sshPath, '/root/.ssh');
+        } else {
+            console.warn(`SSH directory not found at ${sshPath}, skipping SSH file copy`);
+        }
+
+        // 0.4.3 read ~/.gitconfig on local machine using fs
+        const gitConfigPath = path.join(os.homedir(), '.gitconfig');
+        if (fs.existsSync(gitConfigPath)) {
+            console.log(`Reading git config from ${gitConfigPath}...`);
+            const dotGitConfigFileText = await fs.promises.readFile(gitConfigPath, 'utf8');
+            // 0.4.4 copy ~/.gitconfig to ~/.gitconfig (/root/.gitconfig) in the container
+            await docker.copyFileToContainer(dotGitConfigFileText, '/root/.gitconfig');
+        } else {
+            console.warn(`Git config file not found at ${gitConfigPath}, skipping git config copy`);
+        }
 
 
         // 1. Clone the source code repository
@@ -104,10 +121,11 @@ export async function analyzeCodebase(
             throw new Error("SWEAgentType.CODEX is not implemented yet for analyzeCodebase");
         }
 
-        console.log("Commands to run in Docker:");
-        for (const command of allCommands) {
-            console.log(command);
-        }
+        // console.log("Commands to run in Docker:");
+        // for (const command of allCommands) {
+        //     console.log(command);
+        // }
+        console.log("Start to run commands to analyze codebase in Docker...");
 
         // Execute all commands in a single run
         const dockerResult = await docker.runCommands(
