@@ -63,7 +63,7 @@ body:
       options:
         - Claude Code
         - Gemini CLI
-        - Codex
+        - Codex (currently not available)
         - Not applicable
     validations:
       required: false
