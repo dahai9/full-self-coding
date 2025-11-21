@@ -1,0 +1,318 @@
+:root {
+  --bg-primary: #ffffff;
+  --bg-secondary: #f5f5f5;
+  --bg-tertiary: #e0e0e0;
+  --text-primary: #000000;
+  --text-secondary: #333333;
+  --text-dim: #666666;
+  --border-color: #333333;
+  --hover-bg: #f0f8f0;
+  --terminal-green: #008000;
+  --terminal-cyan: #006666;
+  --terminal-yellow: #b35a00;
+  --terminal-red: #cc0000;
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: 'Courier New', monospace;
+  background-color: var(--bg-primary);
+  color: var(--text-primary);
+  line-height: 1.4;
+  overflow-x: hidden;
+}
+
+#root {
+  min-height: 100vh;
+  padding: 20px;
+}
+
+.terminal-container {
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+}
+
+.terminal-header {
+  background-color: var(--bg-tertiary);
+  border-bottom: 1px solid var(--border-color);
+  padding: 10px 15px;
+  font-weight: bold;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+}
+
+.terminal-content {
+  padding: 20px;
+}
+
+.task-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-bottom: 20px;
+}
+
+.task-table th,
+.task-table td {
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  text-align: left;
+  vertical-align: top;
+}
+
+.task-table th {
+  background-color: var(--bg-tertiary);
+  color: var(--text-secondary);
+  font-weight: bold;
+  text-transform: uppercase;
+  font-size: 12px;
+  letter-spacing: 1px;
+}
+
+.task-table tr:hover {
+  background-color: var(--hover-bg);
+}
+
+.view-button {
+  background-color: transparent;
+  border: 1px solid var(--terminal-green);
+  color: var(--terminal-green);
+  padding: 6px 12px;
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  text-transform: uppercase;
+  transition: all 0.2s;
+}
+
+.view-button:hover {
+  background-color: var(--terminal-green);
+  color: var(--bg-primary);
+  box-shadow: 0 0 10px rgba(0, 128, 0, 0.3);
+}
+
+.expandable-report {
+  margin-top: 10px;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-secondary);
+}
+
+.expand-button {
+  background-color: transparent;
+  border: none;
+  color: var(--terminal-cyan);
+  cursor: pointer;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.expand-button:hover {
+  color: var(--terminal-green);
+}
+
+.report-content {
+  padding: 15px;
+  border-top: 1px solid var(--border-color);
+  white-space: pre-wrap;
+  font-family: 'Courier New', monospace;
+  font-size: 12px;
+  line-height: 1.6;
+  max-height: 300px;
+  overflow-y: auto;
+}
+
+.report-content::-webkit-scrollbar {
+  width: 8px;
+}
+
+.report-content::-webkit-scrollbar-track {
+  background: var(--bg-tertiary);
+}
+
+.report-content::-webkit-scrollbar-thumb {
+  background: var(--terminal-green);
+}
+
+.diff-viewer {
+  background-color: var(--bg-secondary);
+  border: 1px solid var(--border-color);
+  margin: 20px 0;
+  overflow: hidden;
+}
+
+.file-header {
+  background-color: var(--bg-tertiary);
+  padding: 10px 15px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.file-path {
+  color: var(--text-primary);
+  font-weight: bold;
+  font-size: 14px;
+}
+
+.file-status {
+  padding: 2px 8px;
+  font-size: 10px;
+  text-transform: uppercase;
+  font-weight: bold;
+}
+
+.file-status.added {
+  background-color: #008000;
+  color: #ffffff;
+}
+
+.file-status.deleted {
+  background-color: #cc0000;
+  color: #ffffff;
+}
+
+.file-status.modified {
+  background-color: #b35a00;
+  color: #ffffff;
+}
+
+.file-status.renamed {
+  background-color: #006666;
+  color: #ffffff;
+}
+
+.diff-content {
+  padding: 15px;
+  overflow: hidden;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  background-color: var(--bg-secondary);
+}
+
+.diff-container {
+  display: flex;
+  width: 100%;
+  border: 1px solid var(--border-color);
+  background-color: var(--bg-primary);
+  overflow: hidden;
+}
+
+.diff-column {
+  flex: 1;
+  min-width: 300px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.diff-column:first-child {
+  border-right: 1px solid var(--border-color);
+}
+
+.diff-line-numbers {
+  width: 50px;
+  background-color: var(--bg-tertiary);
+  border-right: 1px solid var(--border-color);
+  color: var(--text-secondary);
+  text-align: right;
+  padding-right: 10px;
+  padding-top: 2px;
+  padding-bottom: 2px;
+  font-size: 10px;
+  font-weight: 600;
+  user-select: none;
+  flex-shrink: 0;
+}
+
+.diff-line-content {
+  flex: 1;
+  white-space: pre-wrap;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  padding: 2px 10px;
+  font-family: 'Courier New', monospace;
+  font-size: 11px;
+  line-height: 1.4;
+  overflow: hidden;
+  min-height: 18px;
+}
+
+.diff-row {
+  display: flex;
+  min-height: 18px;
+  align-items: flex-start;
+  width: 100%;
+}
+
+.diff-row.empty {
+  background-color: var(--bg-secondary);
+}
+
+.diff-row.added .diff-line-content {
+  background-color: #e6ffe6;
+  color: #006600;
+  font-weight: 500;
+}
+
+.diff-row.deleted .diff-line-content {
+  background-color: #ffe6e6;
+  color: #cc0000;
+  font-weight: 500;
+}
+
+.diff-row.context .diff-line-content {
+  color: var(--text-primary);
+  background-color: transparent;
+}
+
+.diff-header {
+  background-color: var(--bg-tertiary);
+  color: var(--text-primary);
+  padding: 5px 10px;
+  font-size: 11px;
+  text-transform: uppercase;
+  font-weight: bold;
+  border-bottom: 1px solid var(--border-color);
+  text-align: center;
+}
+
+.section-title {
+  color: var(--terminal-cyan);
+  font-size: 16px;
+  font-weight: bold;
+  margin: 20px 0 10px 0;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  border-bottom: 1px solid var(--terminal-cyan);
+  padding-bottom: 5px;
+}
+
+.hidden {
+  display: none;
+}
+
+.loading {
+  color: var(--terminal-yellow);
+  font-style: italic;
+}
+
+.commit-hash {
+  color: var(--terminal-yellow);
+  font-size: 10px;
+}
+
+.branch-name {
+  color: var(--terminal-cyan);
+  font-weight: bold;
+}
